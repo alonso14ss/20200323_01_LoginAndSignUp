@@ -16,4 +16,14 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
     }
+
+    @Override
+    public void setupEvents() {
+
+    }
+
+    @Override
+    public void setValues() {
+
+    }
 }

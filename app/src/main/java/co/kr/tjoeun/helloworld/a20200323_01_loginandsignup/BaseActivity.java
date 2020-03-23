@@ -8,7 +8,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public Context mContext = this;
 
-    public abstract void setupEvents;
-    public abstract void setValues;
+    public abstract void setupEvents();
+    public abstract void setValues();
 
 }
