@@ -5,12 +5,14 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.databinding.ActivityMainBinding;
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.utils.ContextUtil;
+import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.utils.ServerUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -59,6 +61,10 @@ public class MainActivity extends BaseActivity {
 //                    체크가 안된 상황
                     ContextUtil.setEmail(mContext, "");
                 }
+                String inputEmail = binding.emailEdt.getText().toString();
+                String inputPw =  binding.pwEdt.getText().toString()
+
+                ServerUtil.postRequestLogin(mContext, inputEmail, inputPw, null);
 
 
             }
