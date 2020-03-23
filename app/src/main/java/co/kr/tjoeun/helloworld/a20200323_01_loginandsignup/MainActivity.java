@@ -9,7 +9,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.databinding.ActivityMainBinding;
@@ -69,7 +71,42 @@ public class MainActivity extends BaseActivity {
                 ServerUtil.postRequestLogin(mContext, inputEmail, inputPw, new ServerUtil.JsonResponseHandler() {
                     @Override
                     public void onResponse(JSONObject json) {
+//                        응답실행코드는 비동기 처리가 반드시 필요함
+//                        비동기 : 다른 할 일들을 하다가  완료되면 별도로 실행해주자
+//                        okHttp : 비동기처리를 자동으로 지원 => 별도 쓰레드가 알아서 진행
+//                        => 이 onResponse는 다른 스레드가 돌리고있다
+//                        UI동작은 메인스레드가 전용으로 처리함
+//                        => 다른 스레드가 UI를 건드리면 앱이 터짐
+
                         Log.d("제이슨 내용-메인에서", json.toString());
+
+                        try {
+                            final String message = json.getString("message");
+                            Log.d("서버가 주는 메세지", message);
+
+                            int code = json.getInt("code");
+                            Log.d("서버가 주는 코드",code+"");
+
+                            if (code == 200){
+//                                해당 기능이 성공적으로 동작
+                            }else{
+//                                뭔가 문제가 있음
+
+//                                toast를 띄우는데 앱이 뒤짐!
+//                                조치 : UIThread 안에서 토스트를 띄우도록
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 
