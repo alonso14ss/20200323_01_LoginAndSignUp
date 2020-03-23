@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.databinding.ActivityMainBinding;
+import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.datas.User;
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.utils.ContextUtil;
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.utils.ServerUtil;
 
@@ -103,13 +104,15 @@ public class MainActivity extends BaseActivity {
                                 JSONObject user = data.getJSONObject("user");
                                 String token = data.getString("token");
 //                                로그인한 사람의 이름을 토스트로 띄워보자
-                                final String name = data.getString("name");
-                                final String phone = data.getString("phone");
+//                                final String name = data.getString("name");
+//                                final String phone = data.getString("phone");
+
+                                final User loginUser = User.getUserFromJson(user);
 
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(mContext,String.format(("%s/%s"), name,phone),Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext,String.format(("%s/%s"), loginUser.getName(),loginUser.getPhone()),Toast.LENGTH_LONG).show();
                                     }
                                 });
 
