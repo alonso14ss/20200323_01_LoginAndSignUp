@@ -117,7 +117,6 @@ public class LoginActivity extends BaseActivity {
 
 //                                        메인화면으로 진입 => 저장된 토큰을 이용할 예정
                                         Intent intent = new Intent(mContext, MainActivity.class);
-                                        intent.putExtra("user", loginUser);
                                         startActivity(intent);
                                     }
                                 });

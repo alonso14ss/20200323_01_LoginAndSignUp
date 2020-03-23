@@ -12,6 +12,7 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -131,4 +132,56 @@ public class ServerUtil {
 
     }
 
+    public static void getRequestMyInfo(Context context, final JsonResponseHandler handler){
+
+        OkHttpClient client = new OkHttpClient();
+
+//        get - 파라미터를 query에 담는다 => url에 노출된다
+//        => url을 가공하면? 파라미터가 첨부된다
+
+//        뼈대가 되는 주소 가공 변수 : 호스트주소 / 기능주소 연결해서 생성
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(String.format("%s/my_info",BASE_URL)).newBuilder();
+//        urlBuilder.addEncodedQueryParameter("파라미터 이름","값");
+//        get에서 query 파라미터를 요구하면 윗줄처럼 담아주자
+
+//        파라미터들이 첨부된 urlBuilder를 이용해 => String으로 변환
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder().url(url).header("X-Http-Token", ContextUtil.getUserToken(context)).build();
+//        GET의 경우에는 메소드 지정 필요 없다 (제일 기본이라)
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                연결 실패 처리
+                Log.e("서버연결실패", "연결안됨");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                연결 성공해서 응답이 돌아왔을떄 => string()으로 변환
+                String body = response.body().string();
+                Log.d("로그인 응답", body);
+
+//                응답을 JSON객체로 가공
+                try {
+//                    body의 string을 => JSONObject형태로 변환
+//                    양식에 맞지않는 내용이면 앱이 터질수 있으니
+//                    try/catch로 감싸도록 처리
+                    JSONObject json = new JSONObject(body);
+
+//                    이 JSON에 대한 분석은 화면단에 넘겨주자
+                    if (handler != null){
+                        handler.onResponse(json);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+        }
 }
