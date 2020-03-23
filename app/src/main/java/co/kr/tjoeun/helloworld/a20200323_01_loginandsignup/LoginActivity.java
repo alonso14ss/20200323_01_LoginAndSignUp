@@ -1,6 +1,7 @@
 package co.kr.tjoeun.helloworld.a20200323_01_loginandsignup;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -99,7 +100,7 @@ public class LoginActivity extends BaseActivity {
 //                                로그인 성공!
                                 JSONObject data = json.getJSONObject("data");
                                 JSONObject user = data.getJSONObject("user");
-                                String token = data.getString("token");
+                                final String token = data.getString("token");
 //                                로그인한 사람의 이름을 토스트로 띄워보자
 //                                final String name = data.getString("name");
 //                                final String phone = data.getString("phone");
@@ -110,6 +111,14 @@ public class LoginActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         Toast.makeText(mContext,String.format(("%s/%s"), loginUser.getName(),loginUser.getPhone()),Toast.LENGTH_LONG).show();
+
+//                                        따온 토큰을 SharedPreferences에 저장 => 로그인에 성공했다 + 내가 누군지 기록
+                                        ContextUtil.setUserToken(mContext, token);
+
+//                                        메인화면으로 진입 => 저장된 토큰을 이용할 예정
+                                        Intent intent = new Intent(mContext, MainActivity.class);
+                                        intent.putExtra("user", loginUser);
+                                        startActivity(intent);
                                     }
                                 });
 
@@ -123,6 +132,8 @@ public class LoginActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
+
+
                                     }
                                 });
 

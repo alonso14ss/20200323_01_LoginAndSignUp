@@ -11,6 +11,7 @@ public class ContextUtil {
 //    항목명도 자동완성 지원할 수 있도록 미리 변수화
     private static final String EMAIL = "EMAIL";
     private static final String ID_CHECK = "ID_CHECK";
+    private static final String USER_TOKEN = "USER_TOKEN";
 
 //    static : math.random(), String.format() : 누가? 하는지 중요하지 않음
 //    static : 프로그램 시작시 제일 먼저 별도로 생성
@@ -52,6 +53,17 @@ public class ContextUtil {
     public static boolean isIdCheck(Context context){
          SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
          return pref.getBoolean(ID_CHECK, true);
+    }
+
+    public static void setUserToken(Context context, String token){
+         SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+         pref.edit().putString(USER_TOKEN, token);
+    }
+
+    public static  String getUserToken(Context context){
+        SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+        return pref.getString(USER_TOKEN, "");
+
     }
 
 }
