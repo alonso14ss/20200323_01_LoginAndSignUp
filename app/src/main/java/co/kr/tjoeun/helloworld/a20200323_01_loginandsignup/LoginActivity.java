@@ -1,12 +1,9 @@
 package co.kr.tjoeun.helloworld.a20200323_01_loginandsignup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -15,19 +12,20 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.databinding.ActivityLoginBinding;
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.databinding.ActivityMainBinding;
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.datas.User;
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.utils.ContextUtil;
 import co.kr.tjoeun.helloworld.a20200323_01_loginandsignup.utils.ServerUtil;
 
-public class MainActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity {
 
-    ActivityMainBinding binding = null;
+    ActivityLoginBinding binding = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
 
         setupEvents();
         setValues();
