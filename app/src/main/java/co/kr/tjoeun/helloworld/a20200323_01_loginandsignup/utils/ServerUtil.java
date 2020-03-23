@@ -79,5 +79,56 @@ public class ServerUtil {
         });
 
     }
+//          파라미터 기초 구조 : 어떤화면 context / 무슨일 handler
+//          가운데 추가 고려 : 화면에서 어떤 데이터를 받아서 서버로 전달?
+    public static  void putRequestSignUp(Context context, String id, String pw, String name, String phoneNum, final JsonResponseHandler handler){
+
+//        클라이언트의 역할을 수행하는 변수 생성
+        OkHttpClient client = new OkHttpClient();
+
+//         어느 주소(호스트주소/기능주소)로 갈지? String 변수로 저장
+//        www.naver.com/auth
+
+        String urlstr = String.format("%s/auth",BASE_URL);
+
+//        서버로 들고갈 파라미터를 담아줘야함
+//        어떤 데이터를 담아야 하는지? API명세서 참조
+        FormBody formData = new FormBody.Builder().add("login_id",id).add("password",pw).add("name",name).add("phone",phoneNum).build();
+//         어떤 메소드를 쓰는지?
+        Request request = new Request.Builder().url(urlstr).put(formData).build();
+//                필요한 경우 헤더도 추가해야함
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                연결 실패 처리
+                Log.e("서버연결실패", "연결안됨");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                연결 성공해서 응답이 돌아왔을떄 => string()으로 변환
+                String body = response.body().string();
+                Log.d("로그인 응답", body);
+
+//                응답을 JSON객체로 가공
+                try {
+//                    body의 string을 => JSONObject형태로 변환
+//                    양식에 맞지않는 내용이면 앱이 터질수 있으니
+//                    try/catch로 감싸도록 처리
+                    JSONObject json = new JSONObject(body);
+
+//                    이 JSON에 대한 분석은 화면단에 넘겨주자
+                    if (handler != null){
+                        handler.onResponse(json);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
 
 }
