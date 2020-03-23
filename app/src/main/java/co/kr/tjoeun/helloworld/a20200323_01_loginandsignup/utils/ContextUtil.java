@@ -28,8 +28,17 @@ public class ContextUtil {
 
 //         열린 메모장에 항목(key)/값(value) 저장
          pref.edit().putString(EMAIL, email).apply();
-
-
      }
+
+//     getter
+    public static String getEmail(Context context){
+
+//         메모장을 열어야 뭐라고 적혀있는지 확인 가능
+        SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+
+//        이메일 항목에 적혀있는 값을 확인해서 바로 리넡 처리
+//        저장된 값이 없다면 빈칸으로
+         return pref.getString(EMAIL, "");
+    }
 
 }
