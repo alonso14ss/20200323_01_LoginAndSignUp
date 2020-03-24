@@ -1,7 +1,6 @@
 package co.kr.tjoeun.helloworld.a20200323_01_loginandsignup;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,13 +42,13 @@ public class LoginActivity extends BaseActivity {
         });
 
 //        체크박스에 변화가 있을때 마다 체크여부를 저장.
-        binding.idCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        binding.autoLoginCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 //                Log.d("체크여부", isChecked+"");
 //                ContextUtil을 이용해서 체크 여부를 저장
-                ContextUtil.setIdCheck(mContext, isChecked);
+                ContextUtil.setAutoLoginCheck(mContext, isChecked);
 
             }
         });
@@ -61,18 +60,6 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-//                체크박스에 체크가 되어있나?
-                if (binding.idCheckBox.isChecked()){
-
-//                    체크가 되어있는 상황
-                    String inputEmail = binding.emailEdt.getText().toString();
-
-                    ContextUtil.setEmail(mContext, inputEmail);
-
-                }else{
-//                    체크가 안된 상황
-                    ContextUtil.setEmail(mContext, "");
-                }
                 String inputEmail = binding.emailEdt.getText().toString();
                 String inputPw =  binding.pwEdt.getText().toString();
 
@@ -155,7 +142,7 @@ public class LoginActivity extends BaseActivity {
 
 //        이 화면을 키면 저장된 이메일값을 email에 입력하려고 함
         binding.emailEdt.setText(ContextUtil.getEmail(mContext));
-        binding.idCheckBox.setChecked(ContextUtil.isIdCheck(mContext));
+        binding.autoLoginCheckBox.setChecked(ContextUtil.isAutoLoginCheck(mContext));
 
     }
 }
